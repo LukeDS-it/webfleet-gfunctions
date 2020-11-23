@@ -1,0 +1,20 @@
+name: Build and deploy
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+   deploy-domain-setup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ secrets.TEST_PROJECT_ID }}
+          service_account_key: ${{ secrets.TEST_SA_KEY }}
+          export_default_credentials: true
+      - name: Test GCloud config
+        run: gcloud info
