@@ -44,9 +44,16 @@ jobs:
           export_default_credentials: true
       - name: Test GCloud config
         run: gcloud info
-      - name: pwd
+      - name: LS1
         run: ls
-      - name: Deploy domain-setup
-        working-directory: ./domain-setup/target/scala-2.13/deploy
-        run: gcloud functions deploy domain-setup --entry-point it.ldsoftware.webfleet.functions.CreateDomainStructure --runtime java11 --trigger-event providers/cloud.firestore/eventTypes/document.create --trigger-resource projects/${{ secrets.TEST_PROJECT_ID }}/databases/\(default\)/documents/domains/{domainId} --region europe-west1
+        working-directory: ./domain-setup
+      - name: LS2
+        run: ls
+        working-directory: ./domain-setup/target
+      - name: LS3
+        run: ls
+        working-directory: ./domain-setup/target/scala-2.13
+#      - name: Deploy domain-setup
+#        working-directory: ./domain-setup/target/scala-2.13/deploy
+#        run: gcloud functions deploy domain-setup --entry-point it.ldsoftware.webfleet.functions.CreateDomainStructure --runtime java11 --trigger-event providers/cloud.firestore/eventTypes/document.create --trigger-resource projects/${{ secrets.TEST_PROJECT_ID }}/databases/\(default\)/documents/domains/{domainId} --region europe-west1
 
