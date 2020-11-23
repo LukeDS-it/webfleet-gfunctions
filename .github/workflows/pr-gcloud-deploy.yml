@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  deploy-domain-setup:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -35,11 +35,6 @@ jobs:
             ${{ runner.os }}-coursier-cache-
       - name: Build packages
         run: sbt assembly
-
-  deploy-domain-setup:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
       - uses: actions/checkout@v2
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@master
