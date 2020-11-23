@@ -27,6 +27,7 @@ lazy val `domain-setup` = project
   .dependsOn(commons)
   .enablePlugins(JavaAppPackaging)
   .settings(CommonSettings.settings)
+  .settings(AssemblySettings.settings)
   .settings(
     libraryDependencies ++= Seq(
       "com.google.cloud" % "google-cloud-firestore" % firestoreVersion,
