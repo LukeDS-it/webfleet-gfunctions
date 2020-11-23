@@ -8,7 +8,7 @@ import it.ldsoftware.webfleet.firestore.model._
 
 class CreateDomainStructure(firestore: Firestore) extends CreateDomainHandler {
 
-  def this() {
+  def this() = {
     this(CreateDomainStructure.firestore)
   }
 
