@@ -1,2 +1,7 @@
+.bsp
+.idea
+.git
+target
 *.class
 *.log
+*.iml

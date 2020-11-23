@@ -1,0 +1,23 @@
+{
+  "updateMask": {},
+  "value": {
+    "updateTime": "2020-11-23T18:06:11.784255Z",
+    "createTime": "2020-11-23T18:06:11.784255Z",
+    "name": "projects/project-name/databases/(default)/documents/domains/domain-unique-id",
+    "fields": {
+      "author": {
+        "stringValue": "author@email.com"
+      },
+      "icon": {
+        "stringValue": "icon-string-value"
+      },
+      "deleted": {
+        "booleanValue": false
+      },
+      "title": {
+        "stringValue": "Website Title"
+      }
+    }
+  },
+  "oldValue": {}
+}
