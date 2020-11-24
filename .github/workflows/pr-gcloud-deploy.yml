@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  deploy-domain-setup:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -35,7 +35,25 @@ jobs:
             ${{ runner.os }}-coursier-cache-
       - name: Build packages
         run: sbt assembly
-      - uses: actions/checkout@v2
+      - name: Bundle functions
+        run: tar -cvf functions.tar domain-setup/target/scala-2.13/deploy/domain-setup-function.jar
+      - name: Save function jars
+        uses: actions/upload-artifact@v2
+        with:
+          name: all-functions
+          retention-days: 1
+          path: functions.tar
+
+  deploy-domain-setup:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Retrieve compiled functions
+        uses: actions/download-artifact@v2
+        with:
+          name: all-functions
+      - name: Unpack functions
+        run: tar -xvf functions.tar
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@master
         with:
@@ -44,16 +62,12 @@ jobs:
           export_default_credentials: true
       - name: Test GCloud config
         run: gcloud info
-      - name: LS1
-        run: ls
-        working-directory: ./domain-setup
-      - name: LS2
-        run: ls
-        working-directory: ./domain-setup/target
-      - name: LS3
-        run: ls
-        working-directory: ./domain-setup/target/scala-2.13
-#      - name: Deploy domain-setup
-#        working-directory: ./domain-setup/target/scala-2.13/deploy
-#        run: gcloud functions deploy domain-setup --entry-point it.ldsoftware.webfleet.functions.CreateDomainStructure --runtime java11 --trigger-event providers/cloud.firestore/eventTypes/document.create --trigger-resource projects/${{ secrets.TEST_PROJECT_ID }}/databases/\(default\)/documents/domains/{domainId} --region europe-west1
-
+      - name: Deploy domain-setup
+        working-directory: ./domain-setup/target/scala-2.13/deploy
+        run: >-
+          gcloud functions deploy domain-setup
+          --entry-point it.ldsoftware.webfleet.functions.CreateDomainStructure
+          --runtime java11
+          --trigger-event providers/cloud.firestore/eventTypes/document.create
+          --trigger-resource projects/${{ secrets.TEST_PROJECT_ID }}/databases/\(default\)/documents/domains/{domainId}
+          --region europe-west1
