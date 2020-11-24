@@ -1,6 +1,5 @@
 import sbt._
 import sbt.Keys._
-import sbtassembly.AssemblyPlugin.autoImport._
 
 object CommonSettings {
   val projectScalaVersion: String = "2.13.3"
@@ -36,12 +35,6 @@ object CommonSettings {
       fork in run := true,
       fork in Test := true,
       sbtPlugin := false,
-      scalaVersion := projectScalaVersion,
-      assemblyMergeStrategy in assembly := {
-        case "module-info.class" => MergeStrategy.discard
-        case x =>
-          val oldStrategy = (assemblyMergeStrategy in assembly).value
-          oldStrategy(x)
-      }
+      scalaVersion := projectScalaVersion
     )
 }
